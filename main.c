@@ -29,6 +29,19 @@ unsigned int length(char * arg) {
     return count;
 }
 
+unsigned int equal(char * data_1, char * data_2) {
+    unsigned int data_1_length = length(data_1);
+    unsigned int data_2_length = length(data_2);
+
+    if(data_1_length != data_2_length) return 0;
+
+    for(int i = 0; i < data_1_length; i++) {
+        if(data_1[i] != data_2[i]) return 0;
+    }
+
+    return 1;
+}
+
 // Hash table declared
 struct person * hash_table[TABLE_SIZE];
 
