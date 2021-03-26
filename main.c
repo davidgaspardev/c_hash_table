@@ -29,6 +29,7 @@ unsigned int length(char * arg) {
     return count;
 }
 
+// Hash table declared
 struct person * hash_table[TABLE_SIZE];
 
 // Hash function
@@ -47,12 +48,14 @@ unsigned int hash(char * name) {
     return hash_value;
 }
 
+// Ensure that the table has no data dirt
 void init_hash_table() {
     for(int i = 0; i < TABLE_SIZE; i++) {
         hash_table[i] = NULL;
     }
 }
 
+// Show table state
 void print_hash_table() {
     for(int i = 0; i < TABLE_SIZE; i++) {
         if (hash_table[i] == NULL) {
@@ -63,13 +66,16 @@ void print_hash_table() {
     }
 }
 
-int hash_table_insert(struct person * person) {
+// Insert person in the hash table
+unsigned int hash_table_insert(struct person * person) {
+    // Check if person data exists
     if(person == NULL) return 0;
 
+    // Pass person to hash function
     int index = hash(person->name);
-    if(hash_table[index] != NULL) {
-        return 0;
-    }
+    // Check if position in the hash table is empty.
+    if(hash_table[index] != NULL) return 0;
+    
     hash_table[index] = person;
     return 1;
 }
