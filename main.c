@@ -15,7 +15,7 @@ struct person {
 };
 
 // Get argument length
-unsigned int length(char * arg) {
+unsigned int length(const char * arg) {
 
     unsigned int offset = 0;
 
@@ -29,7 +29,7 @@ unsigned int length(char * arg) {
     return count;
 }
 
-unsigned int equal(char * data_1, char * data_2) {
+unsigned int equal(const char * data_1, const char * data_2) {
     unsigned int data_1_length = length(data_1);
     unsigned int data_2_length = length(data_2);
 
@@ -93,6 +93,16 @@ unsigned int hash_table_insert(struct person * person) {
     return 1;
 }
 
+// Find a person in the table by their name
+struct person * hash_table_lookup(char * name) {
+    int index = hash(name);
+
+    if(hash_table[index] != NULL && equal(name, hash_table[index]->name)) {
+        return hash_table[index];
+    }
+    return NULL;
+}
+
 // Entry pointer
 int main(unsigned int argc, const char ** argv) {
 
@@ -143,6 +153,15 @@ int main(unsigned int argc, const char ** argv) {
     
 
     print_hash_table();
+
+    if(argc > 1) {
+        struct person * found = hash_table_lookup((char *) argv[1]);
+
+        if(found != NULL) {
+            printf("I found the %s\n", found->name);
+            printf("%s is %i years old", found->sex ? "He" : "She", found->age);
+        }
+    }
 
     return 1;
 }
