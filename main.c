@@ -70,6 +70,9 @@ void init_hash_table() {
 
 // Show table state
 void print_hash_table() {
+
+    printf("\n========== TABLE START ==========\n");
+
     for(int i = 0; i < TABLE_SIZE; i++) {
         if (hash_table[i] == NULL) {
             printf("\t%i\t---\n", i);
@@ -77,6 +80,8 @@ void print_hash_table() {
             printf("\t%i\t%s\n", i, hash_table[i]->name);
         }
     }
+
+    printf("========== TABLE END ==========\n\n");
 }
 
 // Insert person in the hash table
@@ -99,8 +104,22 @@ struct person * hash_table_lookup(char * name) {
 
     if(hash_table[index] != NULL && equal(name, hash_table[index]->name)) {
         return hash_table[index];
+    } else {
+        return NULL;
     }
-    return NULL;
+}
+
+// Delete a person in the table by their name
+struct person * hash_table_delete(char * name) {
+    int index = hash(name);
+
+    if(hash_table[index] != NULL && equal(name, hash_table[index]->name)) {
+        struct person * tmp = hash_table[index];
+        hash_table[index] = NULL;
+        return tmp;
+    } else {
+        return NULL;
+    }
 }
 
 // Entry pointer
