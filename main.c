@@ -3,7 +3,7 @@
 // Directive
 // The #define directive allows the definition of macros within your source code.
 #define MAX_SIZE   256
-#define TABLE_SIZE  10
+#define TABLE_SIZE  15
 
 // Person data structure
 struct person {
@@ -16,9 +16,7 @@ struct person {
 
 // Get argument length
 unsigned int length(const char * arg) {
-
     unsigned int offset = 0;
-
     unsigned int count = 0;
 
     while (*(arg + offset) != '\0') {
@@ -56,7 +54,7 @@ unsigned int hash(char * name) {
         hash_value += name[i];
         hash_value *= name[i];
         hash_value %= TABLE_SIZE;
-    } 
+    }
 
     return hash_value;
 }
@@ -93,7 +91,7 @@ unsigned int hash_table_insert(struct person * person) {
     int index = hash(person->name);
     // Check if position in the hash table is empty.
     if(hash_table[index] != NULL) return 0;
-    
+
     hash_table[index] = person;
     return 1;
 }
@@ -170,16 +168,23 @@ int main(unsigned int argc, const char ** argv) {
     hash_table_insert(&p5);
     hash_table_insert(&p6);
     
-
     print_hash_table();
 
     if(argc > 1) {
-        struct person * found = hash_table_lookup((char *) argv[1]);
 
-        if(found != NULL) {
-            printf("I found the %s\n", found->name);
-            printf("%s is %i years old", found->sex ? "He" : "She", found->age);
+        for(int i = 1; i < argc; i++) {
+
+            struct person * found = hash_table_lookup((char *) argv[i]);
+
+            if(found != NULL) {
+                printf("[ %s found ", found->name);
+                printf("(%s is %i years old) ]\n", found->sex ? "He" : "She", found->age);
+            } else {
+                printf("[ %s not found ]\n", argv[i]);
+            }
+
         }
+
     }
 
     return 1;
