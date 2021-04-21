@@ -126,40 +126,53 @@ int main(unsigned int argc, const char ** argv) {
     init_hash_table();
 
     struct person p1 = {
-        .name = "David",
-        .age = 22,
+        .name = "Emma Watson",
+        .age = 31,
         .sex = 1
     };
 
     struct person p2 = {
-        .name = "Elizabete",
-        .age = 40,
+        .name = "Cara Delevingne",
+        .age = 28,
         .sex = 0
     };
 
     struct person p3 = {
-        .name = "Samuel",
-        .age = 40,
+        .name = "Steve Wozniak",
+        .age = 70,
         .sex = 1
     };
 
     struct person p4 = {
-        .name = "Marta",
-        .age = 79,
+        .name = "Jeff Bezos",
+        .age = 57,
         .sex = 0
     };
 
     struct person p5 = {
-        .name = "Abel",
-        .age = 80,
+        .name = "Mark Zuckerberg",
+        .age = 36,
         .sex = 1
     };
 
     struct person p6 = {
-        .name = "Adelina",
-        .age = 20,
-        .sex = 0
+        .name = "Bill Gates",
+        .age = 65,
+        .sex = 1
     };
+
+    struct person p7 = {
+        .name = "Elon Musk",
+        .age = 49,
+        .sex = 1
+    };
+
+    struct  person p8 = {
+        .name = "David Gaspar",
+        .age = 22,
+        .sex = 1
+    };
+    
 
     hash_table_insert(&p1);
     hash_table_insert(&p2);
@@ -167,6 +180,8 @@ int main(unsigned int argc, const char ** argv) {
     hash_table_insert(&p4);
     hash_table_insert(&p5);
     hash_table_insert(&p6);
+    hash_table_insert(&p7);
+    hash_table_insert(&p8);
     
     print_hash_table();
 
