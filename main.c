@@ -27,6 +27,7 @@ unsigned int length(const char * arg) {
     return count;
 }
 
+// 
 unsigned int equal(const char * data_1, const char * data_2) {
     unsigned int data_1_length = length(data_1);
     unsigned int data_2_length = length(data_2);
@@ -90,7 +91,10 @@ unsigned int hash_table_insert(struct person * person) {
     // Pass person to hash function
     int index = hash(person->name);
     // Check if position in the hash table is empty.
-    if(hash_table[index] != NULL) return 0;
+    if(hash_table[index] != NULL) {
+        printf("\n Person exists %s, miss %s \n", hash_table[index]->name, person->name);
+        return 0;
+    }
 
     hash_table[index] = person;
     return 1;
