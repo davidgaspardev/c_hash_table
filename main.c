@@ -27,7 +27,7 @@ unsigned int length(const char * arg) {
     return count;
 }
 
-// 
+// Check that the values of two string (char *) are equal.
 unsigned int equal(const char * data_1, const char * data_2) {
     unsigned int data_1_length = length(data_1);
     unsigned int data_2_length = length(data_2);
