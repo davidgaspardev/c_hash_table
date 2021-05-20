@@ -4,6 +4,7 @@
 // The #define directive allows the definition of macros within your source code.
 #define MAX_SIZE   256
 #define TABLE_SIZE  15
+#define DELETE_NODE (struct person*)(0xFFFFFFFFFFFFFFFFUL)
 
 // Person data structure
 struct person {
@@ -75,6 +76,8 @@ void print_hash_table() {
     for(int i = 0; i < TABLE_SIZE; i++) {
         if (hash_table[i] == NULL) {
             printf("\t%i\t---\n", i);
+        } else if(hash_table[i] == DELETE_NODE) {
+            printf("\t%i\t<deleted>\n", i);
         } else {
             printf("\t%i\t%s\n", i, hash_table[i]->name);
         }
@@ -87,41 +90,50 @@ void print_hash_table() {
 unsigned int hash_table_insert(struct person * person) {
     // Check if person data exists
     if(person == NULL) return 0;
-
     // Pass person to hash function
     int index = hash(person->name);
-    // Check if position in the hash table is empty.
-    if(hash_table[index] != NULL) {
-        printf("\n Person exists %s, miss %s \n", hash_table[index]->name, person->name);
-        return 0;
+    // start at the location that the hash function has provided me, 
+    // if you've already found the site to keep looking for adding one more in
+    // the hash function location.
+    for(int i = 0; i < TABLE_SIZE; i++) {
+        int try = (i + index) % TABLE_SIZE;
+        if(hash_table[try] == NULL || hash_table[try] == DELETE_NODE) {
+            hash_table[try] = person;
+            return 1;
+        }
     }
-
-    hash_table[index] = person;
-    return 1;
+    return 0;
 }
 
 // Find a person in the table by their name
 struct person * hash_table_lookup(char * name) {
     int index = hash(name);
-
-    if(hash_table[index] != NULL && equal(name, hash_table[index]->name)) {
-        return hash_table[index];
-    } else {
-        return NULL;
+    for(int i = 0; i < TABLE_SIZE; i++) {
+        int try = (i + index) % TABLE_SIZE;
+        if(hash_table[try] == NULL) return NULL;
+        if(hash_table[try] == DELETE_NODE) continue;
+        if(hash_table[try] != NULL && equal(name, hash_table[try]->name)) {
+            return hash_table[try];
+        }
     }
+
+    return NULL;
 }
 
 // Delete a person in the table by their name
 struct person * hash_table_delete(char * name) {
     int index = hash(name);
-
-    if(hash_table[index] != NULL && equal(name, hash_table[index]->name)) {
-        struct person * tmp = hash_table[index];
-        hash_table[index] = NULL;
-        return tmp;
-    } else {
-        return NULL;
+    for(int i = 0; i < TABLE_SIZE; i++) {
+        int try = (i + index) % TABLE_SIZE;
+        if(hash_table[try] == NULL) return NULL;
+        if(hash_table[try] == DELETE_NODE) continue;
+        if(hash_table[try] != NULL && equal(name, hash_table[try]->name)) {
+            struct person * tmp = hash_table[try];
+            hash_table[try] = DELETE_NODE;
+            return tmp;
+        }
     }
+    return NULL;
 }
 
 // Entry pointer
