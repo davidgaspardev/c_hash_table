@@ -38,13 +38,11 @@ unsigned int equal(const char * data_1, const char * data_2) {
 // Impotant: destination needs to be declared as "char [n]", because if 
 // it is declared as "char *", it will not be possible to modify the data.
 // char * is a literal string read-only declaration.
-void copy(char * destination, const char * source, size_t size_of_destination) {
+void copy(const char * source, char * destination, size_t sizeof_destination) {
     unsigned int source_length = length(source);
-    printf("destination %u\n", sizeof(destination));
-    printf("source %u\n", sizeof(source));
 
-    if(source_length > size_of_destination) {
-        printf("[ insufficient defined memory ]: %u (%s) > %u (%s) - It's dangerous to invade memory \n", source_length, source, size_of_destination, destination);
+    if(source_length > sizeof_destination) {
+        printf("[ insufficient defined memory ]: %u (%s) > %u (%s) - It's dangerous to invade memory \n", source_length, source, sizeof_destination, destination);
         return;
     }
 
