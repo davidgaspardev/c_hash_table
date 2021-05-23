@@ -1,6 +1,8 @@
 #ifndef _STRING_H_
 #define _STRING_H_
 
+#include <stdio.h>
+
 #define FALSE  0
 #define TRUE   1
 
@@ -31,21 +33,26 @@ unsigned int equal(const char * data_1, const char * data_2) {
     return TRUE;
 }
 
-void copy(char * destination, const char * source) {
-    unsigned int destination_length = length(destination);
+// Copy data from the source argument to the target argument
+//
+// Impotant: destination needs to be declared as "char [n]", because if 
+// it is declared as "char *", it will not be possible to modify the data.
+// char * is a literal string read-only declaration.
+void copy(char * destination, const char * source, size_t size_of_destination) {
     unsigned int source_length = length(source);
+    printf("destination %u\n", sizeof(destination));
+    printf("source %u\n", sizeof(source));
 
-    if(destination_length > source_length) {
+    if(source_length > size_of_destination) {
+        printf("[ insufficient defined memory ]: %u (%s) > %u (%s) - It's dangerous to invade memory \n", source_length, source, size_of_destination, destination);
         return;
     }
 
     for(int i = 0; i < (source_length + 1); i++) {
-        if(i == source_length) {
-            destination[i] = '\0';
-        } else {
-            destination[i] = source[i];
-        }
+        *(destination + i) = source[i];
     }
+
+    *(destination + source_length) = '\0';
 }
 
 #endif
