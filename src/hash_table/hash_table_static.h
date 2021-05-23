@@ -2,12 +2,11 @@
 #define _HASH_TABLE_H_
 
 // Include internal code
-#include "string.h"
+#include "hash.h"
+#include "../string.h"
 
 // Directive
 // The #define directive allows the definition of macros within your source code.
-#define MAX_SIZE   256
-#define TABLE_SIZE  30
 #define DELETE_NODE (struct person*)(0xFFFFFFFFFFFFFFFFUL)
 
 // Person data structure
@@ -19,24 +18,7 @@ struct person {
     unsigned int sex:1;
 };
 
-// Hash table declared
-struct person * hash_table[TABLE_SIZE];
 
-// Hash function
-unsigned int hash(char * name) {
-
-    unsigned int len = length(name);
-
-    unsigned int hash_value = 0;
-
-    for(int i = 0; i < len; i++) {
-        hash_value += name[i];
-        hash_value *= name[i];
-        hash_value %= TABLE_SIZE;
-    }
-
-    return hash_value;
-}
 
 // Ensure that the table has no data dirt
 void init_hash_table() {
