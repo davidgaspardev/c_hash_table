@@ -1,7 +1,8 @@
 // Include standard code
 #include <stdio.h>
-// #include "src/hash_table_static.h"
-#include "src/hash_table.h"
+// #include "src/hash_table/hash_table_static.h"
+#include "src/string.h"
+#include "src/hash_table/hash_table.h"
 
 // Entry pointer
 int main(unsigned int argc, const char ** argv) {
@@ -66,24 +67,45 @@ int main(unsigned int argc, const char ** argv) {
     hash_table_insert(&p7);
     hash_table_insert(&p8);
     
-    print_hash_table();
-
     if(argc > 1) {
 
+        unsigned int isDelete = FALSE; 
+
         for(int i = 1; i < argc; i++) {
+            // Check cli (delete command)
+            if(i == 1 && equal(argv[i], "delete")) {
+                isDelete = TRUE;
+                continue;
+            }
 
-            struct person * found = hash_table_lookup((char *) argv[i]);
+            if(isDelete) {
+                // Deleting person
+                struct person * deleted = hash_table_delete((char *) argv[i]);
+                
+                if(deleted)
+                    // Show person deleted 
+                    printf("[ %s deleted (%s is %i years old) ]\n", deleted->name, deleted->sex ? "He" : "She", deleted->age);
+                else 
+                    // Person not found
+                    printf("[ %s not found ]\n", argv[i]);
 
-            if(found != NULL) {
-                printf("[ %s found ", found->name);
-                printf("(%s is %i years old) ]\n", found->sex ? "He" : "She", found->age);
             } else {
-                printf("[ %s not found ]\n", argv[i]);
+                // Lookup person
+                struct person * found = hash_table_lookup((char *) argv[i]);
+                
+                if(found != NULL) {
+                    // Show person found
+                    printf("[ %s found ", found->name);
+                    printf("(%s is %i years old) ]\n", found->sex ? "He" : "She", found->age);
+                } else 
+                    // Person not found
+                    printf("[ %s not found ]\n", argv[i]);
             }
 
         }
-
     }
+
+    print_hash_table();
 
     return 1;
 }
