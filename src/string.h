@@ -53,4 +53,21 @@ void copy(const char * source, char * destination, size_t sizeof_destination) {
     *(destination + source_length) = '\0';
 }
 
+void subCopy(const char * source, int start_index, int end_index, char * destination,  size_t sizeof_destination) {
+
+    if(start_index > end_index) return;
+
+    unsigned int source_length = length(source);
+
+    if(end_index > source_length) return;
+
+    unsigned int destination_length = end_index - start_index;
+
+    if(destination_length > sizeof_destination) return;
+
+    for(int i = 0; i < (end_index - start_index); i++) destination[i] = *(source + start_index + i);
+
+    destination[destination_length] = '\0';
+}
+
 #endif
