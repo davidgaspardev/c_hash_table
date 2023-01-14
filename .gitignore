@@ -4,3 +4,7 @@
 
 # Ignore VSCode files
 .vscode
+
+# Ignore directories
+bin/
+build/
