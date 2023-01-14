@@ -1,8 +1,14 @@
 #include "hashtable.h"
 
+#ifdef DEBUG_MODE
+void console(char * msg) {
+    printf("[ DEBUG ] %s\n", msg);
+}
+#endif
+
 hashtable_t * create_hashtable(uint_t table_size) {
 #ifdef DEBUG_MODE
-    printf("creating hashtable");
+    console("creating hashtable");
 #endif
     hashtable_t * hashtable = (hashtable_t*) malloc(sizeof(hashtable_t));
 
@@ -14,7 +20,7 @@ hashtable_t * create_hashtable(uint_t table_size) {
 
 void destroy_hashtable(hashtable_t * hashtable) {
 #ifdef DEBUG_MODE
-    printf("detroing hashtable");
+    console("detroing hashtable");
 #endif
     free(hashtable->cells);
     free(hashtable);
