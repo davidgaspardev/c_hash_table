@@ -14,7 +14,7 @@ hashtable_t * create_hashtable(uint_t table_size) {
 
 void destroy_hashtable(hashtable_t * hashtable) {
 #ifdef DEBUG_MODE
-    printf("detroing hashtable")
+    printf("detroing hashtable");
 #endif
     free(hashtable->cells);
     free(hashtable);
