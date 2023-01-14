@@ -51,7 +51,7 @@ hashtable_debug.o: create_build_dir
 hashtable_create.o: create_build_dir
 	@$(CC) $(CFLAGS) -c $(TESTS_DIR)/hashtable_create.c -o $(BUILD_DIR)/$@
 
-buid_test: create_bin_dir hashtable.o hashtable_create.o
+buid_test: create_bin_dir hashtable_debug.o hashtable_create.o
 	@$(CC) -o $(BIN_DIR)/test $(BUILD_DIR)/$(word 2, $^) $(BUILD_DIR)/$(word 3, $^)
 	@echo [ OK ] Test builded
 
