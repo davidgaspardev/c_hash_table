@@ -1,64 +1,61 @@
 CC = gcc
 CFLAGS = -Wall
 
-BIN_DIR   = bin
-BUILD_DIR = build
-SRC_DIR   = src
-TESTS_DIR = tests
+# Directories
+BIN_DIRECTORY   = bin
+BUILD_DIRECTORY = build
+SRC_DIRECTORY   = src
+TESTS_DIRECTORY = tests
 
-create_bin_dir:
+# Targets files
+$(BIN_DIRECTORY):
 ifeq ($(OS),Windows_NT)
-	@IF NOT EXIST bin (echo [ OK ] Directory create: $(BIN_DIR))
-	@IF EXIST bin (echo [ OK ] Directory already exists: $(BIN_DIR))
-	@IF NOT EXIST bin (mkdir $(BIN_DIR))
+	@IF NOT EXIST bin (echo [ OK ] Directory create: $@)
+	@IF EXIST bin (echo [ OK ] Directory already exists: $@)
+	@IF NOT EXIST bin (mkdir $@)
 else
-	@mkdir -p $(BIN_DIR)
+	@mkdir -p $@
 endif
 
-delete_bin_dir:
+$(BUILD_DIRECTORY):
 ifeq ($(OS),Windows_NT)
-	@IF EXIST bin (echo [ OK ] Directory delete: $(BIN_DIR))
-	@IF EXIST bin (rd /s /q $(BIN_DIR))
+	@IF NOT EXIST build (echo [ OK ] Directory create: $@)
+	@IF EXIST build (echo [ OK ] Directory already exists: $@)
+	@IF NOT EXIST build (mkdir $@)
 else
-	@rm -rf $(BIN_DIR)
+	@mkdir -p $@
 endif
 
-create_build_dir:
+.PHONY: clean test
+
+clean:
 ifeq ($(OS),Windows_NT)
-	@IF NOT EXIST build (echo [ OK ] Directory create: $(BUILD_DIR))
-	@IF EXIST build (echo [ OK ] Directory already exists: $(BUILD_DIR))
-	@IF NOT EXIST build (mkdir $(BUILD_DIR))
+	@IF EXIST bin (echo [ OK ] Directory delete: $(BIN_DIRECTORY))
+	@IF EXIST bin (rd /s /q $(BIN_DIRECTORY))
+	@IF EXIST build (echo [ OK ] Directory delete: $(BUILD_DIRECTORY))
+	@IF EXIST build (rd /s /q $(BUILD_DIRECTORY))
 else
-	@mkdir -p $(BUILD_DIR)
+	@rm -rf $(BIN_DIRECTORY)
+	@rm -rf $(BUILD_DIRECTORY)
 endif
 
-delete_build_dir:
-ifeq ($(OS),Windows_NT)
-	@IF EXIST build (echo [ OK ] Directory delete: $(BUILD_DIR))
-	@IF EXIST build (rd /s /q $(BUILD_DIR))
-else
-	@rm -rf $(BUILD_DIR)
-endif
+hashtable.o: $(BUILD_DIRECTORY)
+	@$(CC) $(CFLAGS) -c $(SRC_DIRECTORY)/hashtable.c -o $(BUILD_DIRECTORY)/$@
 
-clean: delete_bin_dir delete_build_dir
+hashtable_debug.o: $(BUILD_DIRECTORY)
+	@$(CC) $(CFLAGS) -D DEBUG_MODE -c $(SRC_DIRECTORY)/hashtable.c -o $(BUILD_DIRECTORY)/$@
 
-hashtable.o: create_build_dir
-	@$(CC) $(CFLAGS) -c $(SRC_DIR)/hashtable.c -o $(BUILD_DIR)/$@
+hashtable_create.o: $(BUILD_DIRECTORY)
+	@$(CC) $(CFLAGS) -c $(TESTS_DIRECTORY)/hashtable_create.c -o $(BUILD_DIRECTORY)/$@
 
-hashtable_debug.o: create_build_dir
-	@$(CC) $(CFLAGS) -D DEBUG_MODE -c $(SRC_DIR)/hashtable.c -o $(BUILD_DIR)/$@
-
-hashtable_create.o: create_build_dir
-	@$(CC) $(CFLAGS) -c $(TESTS_DIR)/hashtable_create.c -o $(BUILD_DIR)/$@
-
-buid_test: create_bin_dir hashtable_debug.o hashtable_create.o
-	@$(CC) -o $(BIN_DIR)/test $(BUILD_DIR)/$(word 2, $^) $(BUILD_DIR)/$(word 3, $^)
+buid_test: $(BIN_DIRECTORY) hashtable_debug.o hashtable_create.o
+	@$(CC) -o $(BIN_DIRECTORY)/test $(BUILD_DIRECTORY)/$(word 2, $^) $(BUILD_DIRECTORY)/$(word 3, $^)
 	@echo [ OK ] Test builded
 
 test: buid_test
-	@echo [ OK ] Run test: $(BIN_DIR)/test
+	@echo [ OK ] Run test: $(BIN_DIRECTORY)/test
 ifeq ($(OS),Windows_NT)
-	@$(BIN_DIR)/test.exe
+	@$(BIN_DIRECTORY)/test.exe
 else
-	@$(BIN_DIR)/test
+	@$(BIN_DIRECTORY)/test
 endif
