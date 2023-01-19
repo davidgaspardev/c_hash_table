@@ -36,7 +36,7 @@ void copy(const char * source, char * destination, size_t sizeof_destination) {
     unsigned int source_length = length(source);
 
     if(source_length > sizeof_destination) {
-        printf("[ insufficient defined memory ]: %u (%s) > %u (%s) - It's dangerous to invade memory \n", source_length, source, sizeof_destination, destination);
+        printf("[ insufficient defined memory ]: %u (%s) > %zu (%s) - It's dangerous to invade memory \n", source_length, source, sizeof_destination, destination);
         return;
     }
 
