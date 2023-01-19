@@ -1,55 +1,55 @@
-CC = gcc
-CFLAGS = -Wall
+CC = clang
+CFLAGS = -c -Wall
 
 # Directories
 BIN_DIRECTORY   = bin
-BUILD_DIRECTORY = build
+OBJ_DIRECTORY   = obj
 SRC_DIRECTORY   = src
 TESTS_DIRECTORY = tests
 
+# Directories that can be removed
+TMP_DIRECTORIES =    \
+	$(BIN_DIRECTORY) \
+	$(OBJ_DIRECTORY)
+
+SOURCES = $(wildcard $(SRC_DIRECTORY)/*.c)
+OBJECTS = $(patsubst $(SRC_DIRECTORY)/%.c, $(OBJ_DIRECTORY)/%.o, $(SOURCES))
+
 # Targets files
 $(BIN_DIRECTORY):
-ifeq ($(OS),Windows_NT)
-	@IF NOT EXIST bin (echo [ OK ] Directory create: $@)
-	@IF EXIST bin (echo [ OK ] Directory already exists: $@)
-	@IF NOT EXIST bin (mkdir $@)
-else
-	@mkdir -p $@
-endif
+	@mkdir $@
+	@echo [ OK ] Directory created: $@
 
-$(BUILD_DIRECTORY):
-ifeq ($(OS),Windows_NT)
-	@IF NOT EXIST build (echo [ OK ] Directory create: $@)
-	@IF EXIST build (echo [ OK ] Directory already exists: $@)
-	@IF NOT EXIST build (mkdir $@)
-else
-	@mkdir -p $@
-endif
+$(OBJ_DIRECTORY):
+	@mkdir $@
+	@echo [ OK ] Directory created: $@
 
 .PHONY: clean test
 
 clean:
 ifeq ($(OS),Windows_NT)
-	@IF EXIST bin (echo [ OK ] Directory delete: $(BIN_DIRECTORY))
-	@IF EXIST bin (rd /s /q $(BIN_DIRECTORY))
-	@IF EXIST build (echo [ OK ] Directory delete: $(BUILD_DIRECTORY))
-	@IF EXIST build (rd /s /q $(BUILD_DIRECTORY))
+	@$(foreach dir, $(TMP_DIRECTORIES), del /s /q $(dir))
 else
-	@rm -rf $(BIN_DIRECTORY)
-	@rm -rf $(BUILD_DIRECTORY)
+	@$(foreach dir, $(TMP_DIRECTORIES), rm -rf $(dir))
 endif
+	@echo "[ OK ] Removed directories if they existed: $(TMP_DIRECTORIES)"
 
-hashtable.o: $(BUILD_DIRECTORY)
-	@$(CC) $(CFLAGS) -c $(SRC_DIRECTORY)/hashtable.c -o $(BUILD_DIRECTORY)/$@
+build: $(OBJECTS)
 
-hashtable_debug.o: $(BUILD_DIRECTORY)
-	@$(CC) $(CFLAGS) -D DEBUG_MODE -c $(SRC_DIRECTORY)/hashtable.c -o $(BUILD_DIRECTORY)/$@
+$(OBJ_DIRECTORY)/%.o: $(OBJ_DIRECTORY) $(SRC_DIRECTORY)/%.c
+	$(CC) $(CFLAGS) $(word 2, $^) -o $@
 
-hashtable_create.o: $(BUILD_DIRECTORY)
-	@$(CC) $(CFLAGS) -c $(TESTS_DIRECTORY)/hashtable_create.c -o $(BUILD_DIRECTORY)/$@
+hashtable.o: $(OBJ_DIRECTORY)
+	@$(CC) $(CFLAGS) $(SRC_DIRECTORY)/hashtable.c -o $(OBJ_DIRECTORY)/$@
+
+hashtable_debug.o: $(OBJ_DIRECTORY)
+	@$(CC) $(CFLAGS) -D DEBUG_MODE $(SRC_DIRECTORY)/hashtable.c -o $(OBJ_DIRECTORY)/$@
+
+hashtable_create.o: $(OBJ_DIRECTORY)
+	@$(CC) $(CFLAGS) $(TESTS_DIRECTORY)/hashtable_create.c -o $(OBJ_DIRECTORY)/$@
 
 buid_test: $(BIN_DIRECTORY) hashtable_debug.o hashtable_create.o
-	@$(CC) -o $(BIN_DIRECTORY)/test $(BUILD_DIRECTORY)/$(word 2, $^) $(BUILD_DIRECTORY)/$(word 3, $^)
+	@$(CC) -o $(BIN_DIRECTORY)/test $(OBJ_DIRECTORY)/$(word 2, $^) $(OBJ_DIRECTORY)/$(word 3, $^)
 	@echo [ OK ] Test builded
 
 test: buid_test
