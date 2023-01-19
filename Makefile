@@ -4,13 +4,15 @@ CFLAGS = -c -Wall
 # Directories
 BIN_DIRECTORY   = bin
 OBJ_DIRECTORY   = obj
+LIB_DIRECTORY   = lib
 SRC_DIRECTORY   = src
 TESTS_DIRECTORY = tests
 
 # Directories that can be removed
 TMP_DIRECTORIES =    \
 	$(BIN_DIRECTORY) \
-	$(OBJ_DIRECTORY)
+	$(OBJ_DIRECTORY) \
+	$(LIB_DIRECTORY)
 
 SOURCES = $(wildcard $(SRC_DIRECTORY)/*.c)
 OBJECTS = $(patsubst $(SRC_DIRECTORY)/%.c, $(OBJ_DIRECTORY)/%.o, $(SOURCES))
@@ -21,6 +23,10 @@ $(BIN_DIRECTORY):
 	@echo [ OK ] Directory created: $@
 
 $(OBJ_DIRECTORY):
+	@mkdir $@
+	@echo [ OK ] Directory created: $@
+
+$(LIB_DIRECTORY):
 	@mkdir $@
 	@echo [ OK ] Directory created: $@
 
