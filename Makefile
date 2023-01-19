@@ -24,7 +24,7 @@ $(OBJ_DIRECTORY):
 	@mkdir $@
 	@echo [ OK ] Directory created: $@
 
-.PHONY: clean test
+.PHONY: clean test build_test
 
 clean:
 ifeq ($(OS),Windows_NT)
@@ -48,11 +48,11 @@ hashtable_debug.o: $(OBJ_DIRECTORY)
 hashtable_create.o: $(OBJ_DIRECTORY)
 	@$(CC) $(CFLAGS) $(TESTS_DIRECTORY)/hashtable_create.c -o $(OBJ_DIRECTORY)/$@
 
-buid_test: $(BIN_DIRECTORY) hashtable_debug.o hashtable_create.o
+build_test: $(BIN_DIRECTORY) hashtable_debug.o hashtable_create.o
 	@$(CC) -o $(BIN_DIRECTORY)/test $(OBJ_DIRECTORY)/$(word 2, $^) $(OBJ_DIRECTORY)/$(word 3, $^)
 	@echo [ OK ] Test builded
 
-test: buid_test
+test: build_test
 	@echo [ OK ] Run test: $(BIN_DIRECTORY)/test
 ifeq ($(OS),Windows_NT)
 	@$(BIN_DIRECTORY)/test.exe
