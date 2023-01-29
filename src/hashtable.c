@@ -27,6 +27,9 @@ void destroy_hashtable(hashtable_t * hashtable) {
 }
 
 int8_t hashtable_insert(hashtable_t * hashtable, cell_t cell) {
+#ifdef DEBUG_MODE
+    console("inserting in hashtable");
+#endif
     hashtable->cells[0] = cell;
 
     return 1;
