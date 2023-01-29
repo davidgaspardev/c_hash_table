@@ -1,7 +1,7 @@
 #include "hash.h"
 
 #ifdef DEBUG_MODE
-void console(char * msg) {
+static void console(char * msg) {
     printf("[ DEBUG ] %s\n", msg);
 }
 #endif
