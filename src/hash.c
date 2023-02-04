@@ -10,7 +10,7 @@ static void console(char * msg) {
 unsigned int hash(const char* key, unsigned int max_size) {
 #ifdef DEBUG_MODE
     char msg[50];
-    sprintf("create hash index - key: %s (max size: %d)", key, max_size);
+    sprintf(msg, "create hash index - key: %s (max size: %d)", key, max_size);
     console(msg);
 #endif
     unsigned int hash = 0;
