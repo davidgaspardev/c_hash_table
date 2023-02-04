@@ -5,7 +5,7 @@
 #include <stdio.h>
 #endif
 
-#include <string.h>
+#include "../lib/bytes.h"
 
 unsigned int hash(const char * key, unsigned int max_size);
 

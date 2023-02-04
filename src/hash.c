@@ -16,7 +16,7 @@ unsigned int hash(const char* key, unsigned int max_size) {
     unsigned int hash = 0;
     unsigned int i;
 
-    for (i = 0; i < strlen(key); i++) {
+    for (i = 0; i < length(key); i++) {
         hash = hash * 31 + key[i];
     }
 
