@@ -15,6 +15,11 @@ hashtable_t * create_hashtable(uint_t table_size) {
     hashtable->cells = (cell_t *) malloc(sizeof(cell_t) * table_size);
     hashtable->size = table_size;
 
+#ifdef DEBUG_MODE
+    console("calling hash function");
+#endif
+    hash("test", 100);
+
     return hashtable;
 }
 
@@ -31,6 +36,8 @@ int8_t hashtable_insert(hashtable_t * hashtable, cell_t cell) {
     console("inserting in hashtable");
 #endif
     hashtable->cells[0] = cell;
+
+    hash("test", 100);
 
     return 1;
 }

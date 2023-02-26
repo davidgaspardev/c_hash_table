@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <stdint.h>
+#include "hash.h"
 
 #ifdef DEBUG_MODE
 #include <stdio.h>
