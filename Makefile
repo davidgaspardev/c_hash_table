@@ -1,21 +1,26 @@
-CC = clang
-CFLAGS = -c -Wall
+DEBUG_MODE = false
+
+INCLUES_CBYTES = includes/cbytes/src
 
 # Directories
 BIN_DIRECTORY   = bin
 OBJ_DIRECTORY   = obj
-LIB_DIRECTORY   = lib
 SRC_DIRECTORY   = src
 TESTS_DIRECTORY = tests
 
 # Directories that can be removed
 TMP_DIRECTORIES =    \
 	$(BIN_DIRECTORY) \
-	$(OBJ_DIRECTORY) \
-	$(LIB_DIRECTORY)
+	$(OBJ_DIRECTORY)
 
 SOURCES = $(wildcard $(SRC_DIRECTORY)/*.c)
 OBJECTS = $(patsubst $(SRC_DIRECTORY)/%.c, $(OBJ_DIRECTORY)/%.o, $(SOURCES))
+
+CC = clang
+CFLAGS = -c -Wall
+CINCLUDES =             \
+	-Isrc               \
+	-I$(INCLUES_CBYTES)
 
 # Targets files
 $(BIN_DIRECTORY):
@@ -26,11 +31,7 @@ $(OBJ_DIRECTORY):
 	@mkdir $@
 	@echo [ OK ] Directory created: $@
 
-$(LIB_DIRECTORY):
-	@mkdir $@
-	@echo [ OK ] Directory created: $@
-
-.PHONY: clean test build_test
+.PHONY: clean debug build library clean_library test test_hash_create
 
 clean:
 ifeq ($(OS),Windows_NT)
@@ -40,28 +41,39 @@ else
 endif
 	@echo "[ OK ] Removed directories if they existed: $(TMP_DIRECTORIES)"
 
+library:
+	@$(MAKE) -C includes/cbytes library
+
+clean_library:
+	@$(MAKE) -C includes/cbytes clean
+
 build: $(OBJECTS)
 
+debug:
+	@$(eval DEBUG_MODE = true)
+
+# Compile for object files
 $(OBJ_DIRECTORY)/%.o: $(OBJ_DIRECTORY) $(SRC_DIRECTORY)/%.c
-	$(CC) $(CFLAGS) $(word 2, $^) -o $@
+	@if [ $(DEBUG_MODE) = "true" ]; then \
+		$(CC) $(CFLAGS) $(CINCLUDES) -D DEBUG_MODE $(word 2, $^) -o $@; \
+	else \
+		$(CC) $(CFLAGS) $(CINCLUDES) $(word 2, $^) -o $@; \
+	fi
 
-hashtable.o: $(OBJ_DIRECTORY)
-	@$(CC) $(CFLAGS) $(SRC_DIRECTORY)/hashtable.c -o $(OBJ_DIRECTORY)/$@
-
-hashtable_debug.o: $(OBJ_DIRECTORY)
-	@$(CC) $(CFLAGS) -D DEBUG_MODE $(SRC_DIRECTORY)/hashtable.c -o $(OBJ_DIRECTORY)/$@
-
-hashtable_create.o: $(OBJ_DIRECTORY)
-	@$(CC) $(CFLAGS) $(TESTS_DIRECTORY)/hashtable_create.c -o $(OBJ_DIRECTORY)/$@
-
-build_test: $(BIN_DIRECTORY) hashtable_debug.o hashtable_create.o
-	@$(CC) -o $(BIN_DIRECTORY)/test $(OBJ_DIRECTORY)/$(word 2, $^) $(OBJ_DIRECTORY)/$(word 3, $^)
+build_test: debug $(BIN_DIRECTORY) $(OBJECTS)
+	@$(CC) $(CINCLUDES) $(TESTS_DIRECTORY)/hash_create.c -o $(BIN_DIRECTORY)/test $(OBJECTS) -Lincludes/cbytes/lib -lcbytes
 	@echo [ OK ] Test builded
 
-test: build_test
-	@echo [ OK ] Run test: $(BIN_DIRECTORY)/test
-ifeq ($(OS),Windows_NT)
-	@$(BIN_DIRECTORY)/test.exe
-else
-	@$(BIN_DIRECTORY)/test
-endif
+test_hash_create: $(BIN_DIRECTORY) $(OBJECTS)
+	@echo "[ OK ] Compile hash creation test"
+	@$(CC) $(CINCLUDES) $(TESTS_DIRECTORY)/hash_create.c -o $(BIN_DIRECTORY)/$@ $(OBJECTS) -Lincludes/cbytes/lib -lcbytes
+	@echo "[ OK ] Run hash creation test: $(BIN_DIRECTORY)/$@"
+	@$(BIN_DIRECTORY)/$@
+
+test_hashtable_create: $(BIN_DIRECTORY) $(OBJECTS)
+	@echo "[ OK ] Compile hashtable creation test"
+	@$(CC) $(CINCLUDES) $(TESTS_DIRECTORY)/hashtable_create.c -o $(BIN_DIRECTORY)/$@ $(OBJECTS) -Lincludes/cbytes/lib -lcbytes
+	@echo "[ OK ] Run hashtable createtion test: $(BIN_DIRECTORY)/$@"
+	@$(BIN_DIRECTORY)/$@
+
+test: test_hash_create test_hashtable_create
