@@ -13,6 +13,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.CI_TOKEN }}
+          submodules: true
       
       - name: Build library
         run: make library
