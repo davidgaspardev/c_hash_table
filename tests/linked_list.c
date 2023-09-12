@@ -10,7 +10,7 @@ typedef struct node {
 
 typedef struct list {
     int size;
-    Node* root;
+    Node* head;
 } List;
 
 List* create_list()
@@ -18,7 +18,7 @@ List* create_list()
     List* list = (List*) malloc(sizeof(List));
     assert(list != NULL);
     
-    list->root = NULL;
+    list->head = NULL;
     list->size = 0;
     
     return list;
@@ -40,12 +40,12 @@ void insert_at(List* list, int position, int info)
     new_node->info = info;
     
     if (position == 0) {
-        new_node->next = list->root;
-        list->root = new_node;
+        new_node->next = list->head;
+        list->head = new_node;
     }
     
     if (position > 0) {
-        Node* prev_node = list->root;
+        Node* prev_node = list->head;
         int prev_position = position - 1;
         
         for (int i = 0; i < prev_position; i++) {          
@@ -70,7 +70,7 @@ Node* get_at(List* list, int position)
     assert(list != NULL);
     assert(position >= 0 && position < list->size);
     
-    Node* node = list->root;
+    Node* node = list->head;
     for(int i = 0; i < position; i++) {
         node = node->next;
     }
@@ -84,7 +84,7 @@ int remove_at(List* list, int position)
     assert(position >= 0 && position < list->size);
     
     Node* prev_node = NULL;
-    Node* target_node = list->root;
+    Node* target_node = list->head;
     
     for (int i = 0; i < position; i++) {
         prev_node = target_node;
@@ -92,7 +92,7 @@ int remove_at(List* list, int position)
     }
     
     if (prev_node == NULL) {
-        list->root = target_node->next;
+        list->head = target_node->next;
     } else {
         prev_node->next = target_node->next;
     }
@@ -109,12 +109,12 @@ void show_list(List* list)
 {
     assert(list != NULL);
     
-    if (list->root == NULL) {
+    if (list->head == NULL) {
         printf("LIST IS EMPTY\n");
         return;
     }
     
-    Node* current_node = list->root;
+    Node* current_node = list->head;
     
     printf("LIST WITH %d ELEMENTS\n", list->size);
     do {
