@@ -36,24 +36,24 @@ void insert_at(List* list, int position, int info)
     assert(list != NULL);
     assert(position >= 0 && position <= list->size);
     
-    Node* new_row = (Node*) malloc(sizeof(Node));
-    new_row->info = info;
+    Node* new_node = (Node*) malloc(sizeof(Node));
+    new_node->info = info;
     
     if (position == 0) {
-        new_row->next = list->root;
-        list->root = new_row;
+        new_node->next = list->root;
+        list->root = new_node;
     }
     
     if (position > 0) {
-        Node* prev_row = list->root;
+        Node* prev_node = list->root;
         int prev_position = position - 1;
         
         for (int i = 0; i < prev_position; i++) {          
-            prev_row = prev_row->next;
+            prev_node = prev_node->next;
         }
         
-        new_row->next = prev_row->next;
-        prev_row->next = new_row;
+        new_node->next = prev_node->next;
+        prev_node->next = new_node;
     }
     
     list->size++;
@@ -70,12 +70,12 @@ Node* get_at(List* list, int position)
     assert(list != NULL);
     assert(position >= 0 && position < list->size);
     
-    Node* row = list->root;
+    Node* node = list->root;
     for(int i = 0; i < position; i++) {
-        row = row->next;
+        node = node->next;
     }
     
-    return row;
+    return node;
 }
 
 int remove_at(List* list, int position)
@@ -83,23 +83,23 @@ int remove_at(List* list, int position)
     assert(list != NULL);
     assert(position >= 0 && position < list->size);
     
-    Node* prev_row = NULL;
-    Node* target_row = list->root;
+    Node* prev_node = NULL;
+    Node* target_node = list->root;
     
     for (int i = 0; i < position; i++) {
-        prev_row = target_row;
-        target_row = target_row->next;
+        prev_node = target_node;
+        target_node = target_node->next;
     }
     
-    if (prev_row == NULL) {
-        list->root = target_row->next;
+    if (prev_node == NULL) {
+        list->root = target_node->next;
     } else {
-        prev_row->next = target_row->next;
+        prev_node->next = target_node->next;
     }
     
-    int info_removed = target_row->info;
-    printf("FREE ADDR: %p\n", (void*) target_row);
-    free(target_row);
+    int info_removed = target_node->info;
+    printf("FREE ADDR: %p\n", (void*) target_node);
+    free(target_node);
     list->size--;
     
     return info_removed;
@@ -114,14 +114,14 @@ void show_list(List* list)
         return;
     }
     
-    Node* current_row = list->root;
+    Node* current_node = list->root;
     
     printf("LIST WITH %d ELEMENTS\n", list->size);
     do {
-        printf("INFO: %d (ADDR: %p)\n", current_row->info, (void*) current_row);
+        printf("INFO: %d (ADDR: %p)\n", current_node->info, (void*) current_node);
         
-        current_row = current_row->next;
-    } while(current_row != NULL);
+        current_node = current_node->next;
+    } while(current_node != NULL);
 }
 
 void destroy(List* list)
