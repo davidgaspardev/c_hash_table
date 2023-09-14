@@ -57,8 +57,8 @@ void insert_at(List* list, int position, int info)
             list->head->prev = new_node;
         }
 
-        new_node->next = list->head;
         new_node->prev = NULL;
+        new_node->next = list->head;
         list->head = new_node;
     }
 
@@ -115,25 +115,17 @@ Node* get_at(List* list, int position)
 {
     assert(list != NULL);
     assert(position >= 0 && position < list->size);
-
-    Node* node;
-    bool from_tail = (list->size / 2) < (position + 1);
     
-    if(from_tail) {
-        // Iterate from the tail to find the node at the specified position
-        node = list->tail;
-        for(int i = (list->size - 1); i < position; i--) {
-            node = node->prev;
-        }
-    } else {
-        // Iterate from the head to find the node at the specified position
-        node = list->head;
-        for(int i = 0; i < position; i++) {
-            node = node->next;
-        }
+    bool from_tail = (list->size / 2) < (position + 1);
+
+    Node* target_node = from_tail ? list->tail : list->head;
+    int target_position = from_tail ? (list->size - position - 1) : position;
+
+    for (int i = 0; i < target_position; i++) {
+        target_node = from_tail ? target_node->prev : target_node->next;
     }
     
-    return node;
+    return target_node;
 }
 
 // Function to remove an element at a specified position from the list
@@ -227,6 +219,12 @@ int main()
     add(list, 19);
     
     show_list(list);
+
+    printf("position 0: %d\n", get_at(list, 0)->info);
+    printf("position 5: %d\n", get_at(list, 5)->info);
+    printf("position 7: %d\n", get_at(list, 7)->info);
+    printf("position 10: %d\n", get_at(list, 10)->info);
+    printf("position 12: %d\n", get_at(list, 12)->info);
     
     remove_at(list, 1);
     remove_at(list, 3);
