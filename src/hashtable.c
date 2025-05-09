@@ -62,7 +62,7 @@ int8_t hashtable_set(hashtable_t* hashtable, char key[20], void* data, uint8_t d
 
     uint8_t index_hash = hash(key, hashtable->size);
 
-    if (hashtable->cells[index_hash].data == NULL) {
+    if (hashtable->cells[index_hash].data == EMPTY_CELL.data) {
 #ifdef DEBUG_MODE
         sprintf(msg, "Save data (key: %s) in empty index: %d", key, index_hash);
         console(msg);
@@ -74,18 +74,16 @@ int8_t hashtable_set(hashtable_t* hashtable, char key[20], void* data, uint8_t d
         sprintf(msg, "Collision detected for key: %s (index: %d), adding to linked list\n", key, index_hash);
         console(msg);
 #endif
-        cell_t* current_cell = hashtable->cells;
-        while (true) {
-            if (current_cell->next != NULL) {
-                current_cell = current_cell->next;
-                continue;
-            }
-
-            copy(key, current_cell->key, 20);
-            current_cell->data = data_heap;
-            current_cell->next = NULL;
-            break;
+        cell_t* current_cell = &hashtable->cells[index_hash];
+        while(current_cell->next != EMPTY_CELL.next) {
+            current_cell = current_cell->next;
         }
+
+        current_cell->next = (cell_t*) malloc(sizeof(cell_t));
+
+        copy(key, ((cell_t*)current_cell->next)->key, 20);
+        ((cell_t*)current_cell->next)->data = data_heap;
+        ((cell_t*)current_cell->next)->next = EMPTY_CELL.next;
     }
 
     return 0;
@@ -107,11 +105,16 @@ void hashtable_print(hashtable_t* hashtable) {
     printf("hashtable size: %d\n", hashtable->size);
 #ifdef DEBUG_MODE
     for(int i = 0; i < hashtable->size; i++) {
-        printf("[ %d ] ", i);
+        printf("[ %02d ] ", i);
         if(hashtable->cells[i].data == NULL) {
             printf("--- EMPTY ---");
         } else {
-            printf("address: %p", hashtable->cells[i].data);
+            printf("%s", hashtable->cells[i].key);
+            cell_t* current_cell = hashtable->cells[i].next;
+            while (current_cell != NULL) {
+                printf(" -> %s", current_cell->key);
+                current_cell = current_cell->next;
+            }
         }
         printf("\n");
     }

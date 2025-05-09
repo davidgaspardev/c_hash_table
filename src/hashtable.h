@@ -12,7 +12,7 @@
 typedef unsigned int uint_t;
 
 typedef struct cell {
-    char key[20];
+    byte_t key[20];
     void * data;
     void * next;
 } cell_t;
