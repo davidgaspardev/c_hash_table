@@ -7,6 +7,7 @@ const cell_t EMPTY_CELL = {
 };
 
 #ifdef DEBUG_MODE
+static char msg[255];
 static void console(char * msg) {
     printf("[ DEBUG ] %s\n", msg);
 }
@@ -63,11 +64,16 @@ int8_t hashtable_set(hashtable_t* hashtable, char key[20], void* data, uint8_t d
 
     if (hashtable->cells[index_hash].data == NULL) {
 #ifdef DEBUG_MODE
-        console("Save data in empty indexs");
+        sprintf(msg, "Save data (key: %s) in empty index: %d", key, index_hash);
+        console(msg);
 #endif
         copy(key, hashtable->cells[index_hash].key, 20);
         hashtable->cells[index_hash].data = data_heap;
     } else {
+#ifdef DEBUG_MODE
+        sprintf(msg, "Collision detected for key: %s (index: %d), adding to linked list\n", key, index_hash);
+        console(msg);
+#endif
         cell_t* current_cell = hashtable->cells;
         while (true) {
             if (current_cell->next != NULL) {
@@ -78,6 +84,7 @@ int8_t hashtable_set(hashtable_t* hashtable, char key[20], void* data, uint8_t d
             copy(key, current_cell->key, 20);
             current_cell->data = data_heap;
             current_cell->next = NULL;
+            break;
         }
     }
 
