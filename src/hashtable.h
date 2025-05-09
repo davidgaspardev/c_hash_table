@@ -28,6 +28,11 @@ void destroy_hashtable(hashtable_t * hashtable);
 
 // Insert cell in the hashtable (WRITE/INPUT)
 int8_t hashtable_insert(hashtable_t * hashtable, cell_t cell);
+int8_t hashtable_set(hashtable_t* hashtable, char key[20], void* data, uint8_t data_len);
+void*  hashtable_get(hashtable_t* hashtable, char key[20]);
+void   hashtable_print(hashtable_t* hashtable);
+
+static void load_data_bytes(byte_t* src, byte_t* dst, uint8_t size);
 
 // Show all cell data from hashtable
 void show_hashtable(hashtable_t * hashtable);

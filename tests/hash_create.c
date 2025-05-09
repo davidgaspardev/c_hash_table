@@ -18,7 +18,7 @@ int main() {
     for (int i = 0; i < hash_inputs_len; i++) {
         for (int j = 0; j < hash_inputs_len; j++) {
             if (equal(hash_inputs[i], hash_inputs[j]) && i != j) {
-                printf("[ ERR ] input repeted: %s - %s\n", hash_inputs[i], hash_inputs[j]);
+                printf("[ ERR ] input repeated: %s - %s\n", hash_inputs[i], hash_inputs[j]);
                 return 1;
             }
         }
