@@ -249,6 +249,202 @@ void insert_data(hashtable_t *hashtable) {
         .weight = 92.0
     };
 
+    Person friend33 = {
+        .name = "Eleanor Hughes",
+        .age = 27,
+        .height = 1.68,
+        .weight = 60.0
+    };
+
+    Person friend34 = {
+        .name = "Franklin Ward",
+        .age = 31,
+        .height = 1.82,
+        .weight = 85.0
+    };
+
+    Person friend35 = {
+        .name = "Grace Bell",
+        .age = 26,
+        .height = 1.70,
+        .weight = 58.0
+    };
+
+    Person friend36 = {
+        .name = "Henry Cooper",
+        .age = 29,
+        .height = 1.75,
+        .weight = 72.0
+    };
+
+    Person friend37 = {
+        .name = "Isabella Morgan",
+        .age = 28,
+        .height = 1.65,
+        .weight = 55.0
+    };
+
+    Person friend38 = {
+        .name = "Jack Foster",
+        .age = 30,
+        .height = 1.80,
+        .weight = 78.0
+    };
+
+    Person friend39 = {
+        .name = "Katherine Bailey",
+        .age = 32,
+        .height = 1.68,
+        .weight = 62.0
+    };
+
+    Person friend40 = {
+        .name = "Liam Carter",
+        .age = 34,
+        .height = 1.85,
+        .weight = 88.0
+    };
+
+    Person friend41 = {
+        .name = "Mia Brooks",
+        .age = 25,
+        .height = 1.60,
+        .weight = 50.0
+    };
+
+    Person friend42 = {
+        .name = "Noah Jenkins",
+        .age = 33,
+        .height = 1.90,
+        .weight = 92.0
+    };
+
+    Person friend43 = {
+        .name = "Olivia Sanders",
+        .age = 27,
+        .height = 1.72,
+        .weight = 64.0
+    };
+
+    Person friend44 = {
+        .name = "Patrick Murphy",
+        .age = 31,
+        .height = 1.78,
+        .weight = 75.0
+    };
+
+    Person friend45 = {
+        .name = "Quinn Rogers",
+        .age = 29,
+        .height = 1.74,
+        .weight = 68.0
+    };
+
+    Person friend46 = {
+        .name = "Rebecca Powell",
+        .age = 28,
+        .height = 1.66,
+        .weight = 59.0
+    };
+
+    Person friend47 = {
+        .name = "Steven Bryant",
+        .age = 35,
+        .height = 1.88,
+        .weight = 90.0
+    };
+
+    Person friend48 = {
+        .name = "Tiffany Hayes",
+        .age = 26,
+        .height = 1.63,
+        .weight = 57.0
+    };
+
+    Person friend49 = {
+        .name = "Ulysses Perry",
+        .age = 30,
+        .height = 1.81,
+        .weight = 80.0
+    };
+
+    Person friend50 = {
+        .name = "Victoria Reed",
+        .age = 29,
+        .height = 1.69,
+        .weight = 61.0
+    };
+
+    Person friend51 = {
+        .name = "William Hughes",
+        .age = 33,
+        .height = 1.86,
+        .weight = 85.0
+    };
+
+    Person friend52 = {
+        .name = "Xena Collins",
+        .age = 27,
+        .height = 1.64,
+        .weight = 56.0
+    };
+
+    Person friend53 = {
+        .name = "Yusuf Mitchell",
+        .age = 31,
+        .height = 1.79,
+        .weight = 73.0
+    };
+
+    Person friend54 = {
+        .name = "Zara Rivera",
+        .age = 28,
+        .height = 1.67,
+        .weight = 58.0
+    };
+
+    Person friend55 = {
+        .name = "Adam Simmons",
+        .age = 34,
+        .height = 1.83,
+        .weight = 87.0
+    };
+
+    Person friend56 = {
+        .name = "Bella Morris",
+        .age = 26,
+        .height = 1.62,
+        .weight = 54.0
+    };
+
+    Person friend57 = {
+        .name = "Caleb Turner",
+        .age = 29,
+        .height = 1.76,
+        .weight = 70.0
+    };
+
+    Person friend58 = {
+        .name = "Daisy Baker",
+        .age = 28,
+        .height = 1.65,
+        .weight = 55.0
+    };
+
+    Person friend59 = {
+        .name = "Ethan Carter",
+        .age = 32,
+        .height = 1.84,
+        .weight = 83.0
+    };
+
+    Person friend60 = {
+        .name = "Fiona Adams",
+        .age = 30,
+        .height = 1.70,
+        .weight = 63.0
+    };
+
     uint8_t person_len = sizeof(Person);
 
     hashtable_set(hashtable, you.name, (void *) &you, person_len);
@@ -285,6 +481,34 @@ void insert_data(hashtable_t *hashtable) {
     hashtable_set(hashtable, friend30.name, (void *) &friend30, person_len);
     hashtable_set(hashtable, friend31.name, (void *) &friend31, person_len);
     hashtable_set(hashtable, friend32.name, (void *) &friend32, person_len);
+    hashtable_set(hashtable, friend33.name, (void *) &friend33, person_len);
+    hashtable_set(hashtable, friend34.name, (void *) &friend34, person_len);
+    hashtable_set(hashtable, friend35.name, (void *) &friend35, person_len);
+    hashtable_set(hashtable, friend36.name, (void *) &friend36, person_len);
+    hashtable_set(hashtable, friend37.name, (void *) &friend37, person_len);
+    hashtable_set(hashtable, friend38.name, (void *) &friend38, person_len);
+    hashtable_set(hashtable, friend39.name, (void *) &friend39, person_len);
+    hashtable_set(hashtable, friend40.name, (void *) &friend40, person_len);
+    hashtable_set(hashtable, friend41.name, (void *) &friend41, person_len);
+    hashtable_set(hashtable, friend42.name, (void *) &friend42, person_len);
+    hashtable_set(hashtable, friend43.name, (void *) &friend43, person_len);
+    hashtable_set(hashtable, friend44.name, (void *) &friend44, person_len);
+    hashtable_set(hashtable, friend45.name, (void *) &friend45, person_len);
+    hashtable_set(hashtable, friend46.name, (void *) &friend46, person_len);
+    hashtable_set(hashtable, friend47.name, (void *) &friend47, person_len);
+    hashtable_set(hashtable, friend48.name, (void *) &friend48, person_len);
+    hashtable_set(hashtable, friend49.name, (void *) &friend49, person_len);
+    hashtable_set(hashtable, friend50.name, (void *) &friend50, person_len);
+    hashtable_set(hashtable, friend51.name, (void *) &friend51, person_len);
+    hashtable_set(hashtable, friend52.name, (void *) &friend52, person_len);
+    hashtable_set(hashtable, friend53.name, (void *) &friend53, person_len);
+    hashtable_set(hashtable, friend54.name, (void *) &friend54, person_len);
+    hashtable_set(hashtable, friend55.name, (void *) &friend55, person_len);
+    hashtable_set(hashtable, friend56.name, (void *) &friend56, person_len);
+    hashtable_set(hashtable, friend57.name, (void *) &friend57, person_len);
+    hashtable_set(hashtable, friend58.name, (void *) &friend58, person_len);
+    hashtable_set(hashtable, friend59.name, (void *) &friend59, person_len);
+    hashtable_set(hashtable, friend60.name, (void *) &friend60, person_len);
 }
 
 int main() {
@@ -294,9 +518,16 @@ int main() {
 
     hashtable_print(hashtable);
 
-    Person * person = (Person *) hashtable_get(hashtable, "David Gaspar");
+    Person * person = (Person *) hashtable_get(hashtable, "Zachary Howard");
     if (person != NULL) {
         printf("Person found: %s - %d - %.2f - %.2f\n", person->name, person->age, person->height, person->weight);
+    } else {
+        printf("Not found\n");
+    }
+
+    Person* another_person = (Person *) hashtable_get(hashtable, "George Hill");
+    if (another_person != NULL) {
+        printf("Person found: %s - %d - %.2f - %.2f\n", another_person->name, another_person->age, another_person->height, another_person->weight);
     } else {
         printf("Not found\n");
     }
