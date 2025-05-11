@@ -89,6 +89,9 @@ int8_t hashtable_set(hashtable_t* hashtable, char key[20], void* data) {
 }
 
 int8_t hashtable_set_copy(hashtable_t* hashtable, char key[20], void* data) {
+    if (hashtable->entry_size < 1) {
+        return -1;
+    }
     return hashtable_set_copy_custom(hashtable, key, data, hashtable->entry_size);
 }
 
