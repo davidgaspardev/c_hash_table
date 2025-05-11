@@ -13,14 +13,20 @@ static void console(char * msg) {
 }
 #endif
 
-hashtable_t * create_hashtable(uint_t table_size) {
+hashtable_t* create_hashtable(uint_t table_size) {
+    return create_hashtable_with_entry_size(table_size, 0);
+}
+
+hashtable_t* create_hashtable_with_entry_size(uint_t table_size, uint_t entry_size) {
 #ifdef DEBUG_MODE
-    console("creating hashtable");
+    sprintf(msg, "Creating hashtable with sizes: %d (table) %d (entry)", table_size, entry_size);
+    console(msg);
 #endif
     hashtable_t * hashtable = (hashtable_t*) malloc(sizeof(hashtable_t));
 
     hashtable->cells = (cell_t *) malloc(sizeof(cell_t) * table_size);
     hashtable->size = table_size;
+    hashtable->entry_size = entry_size;
 
     // Start empty
     for (int i = 0; i < table_size; i++) {
@@ -28,14 +34,14 @@ hashtable_t * create_hashtable(uint_t table_size) {
     }
 
 #ifdef DEBUG_MODE
-    console("calling hash function");
+    console("Calling hash function");
 #endif
     return hashtable;
 }
 
 void destroy_hashtable(hashtable_t * hashtable) {
 #ifdef DEBUG_MODE
-    console("destroying hashtable");
+    console("Destroying hashtable");
 #endif
     free(hashtable->cells);
     free(hashtable);
@@ -43,7 +49,7 @@ void destroy_hashtable(hashtable_t * hashtable) {
 
 int8_t hashtable_insert(hashtable_t * hashtable, cell_t cell) {
 #ifdef DEBUG_MODE
-    console("inserting in hashtable");
+    console("Inserting in hashtable");
 #endif
     hashtable->cells[0] = cell;
 
@@ -52,14 +58,7 @@ int8_t hashtable_insert(hashtable_t * hashtable, cell_t cell) {
     return 1;
 }
 
-int8_t hashtable_set(hashtable_t* hashtable, char key[20], void* data, uint8_t data_len) {
-    byte_t* data_heap = malloc(sizeof(byte_t) * data_len);
-    if(data_heap == NULL) {
-        return -1;
-    }
-
-    load_data_bytes((byte_t*) data, data_heap, data_len);
-
+int8_t hashtable_set(hashtable_t* hashtable, char key[20], void* data) {
     uint8_t index_hash = hash(key, hashtable->size);
 
     if (hashtable->cells[index_hash].data == EMPTY_CELL.data) {
@@ -68,7 +67,7 @@ int8_t hashtable_set(hashtable_t* hashtable, char key[20], void* data, uint8_t d
         console(msg);
 #endif
         copy(key, hashtable->cells[index_hash].key, 20);
-        hashtable->cells[index_hash].data = data_heap;
+        hashtable->cells[index_hash].data = data;
     } else {
 #ifdef DEBUG_MODE
         sprintf(msg, "Collision detected for key: %s (index: %d), adding to linked list\n", key, index_hash);
@@ -82,11 +81,26 @@ int8_t hashtable_set(hashtable_t* hashtable, char key[20], void* data, uint8_t d
         current_cell->next = (cell_t*) malloc(sizeof(cell_t));
 
         copy(key, ((cell_t*)current_cell->next)->key, 20);
-        ((cell_t*)current_cell->next)->data = data_heap;
+        ((cell_t*)current_cell->next)->data = data;
         ((cell_t*)current_cell->next)->next = EMPTY_CELL.next;
     }
 
     return 0;
+}
+
+int8_t hashtable_set_copy(hashtable_t* hashtable, char key[20], void* data) {
+    return hashtable_set_copy_custom(hashtable, key, data, hashtable->entry_size);
+}
+
+int8_t hashtable_set_copy_custom(hashtable_t* hashtable, char key[20], void* data, uint8_t data_len) {
+    byte_t* data_heap = malloc(sizeof(byte_t) * data_len);
+    if(data_heap == NULL) {
+        return -1;
+    }
+
+    load_data_bytes((byte_t*) data, data_heap, data_len);
+
+    return hashtable_set(hashtable, key, data_heap);
 }
 
 void* hashtable_get(hashtable_t* hashtable, char key[20]) {
@@ -122,22 +136,7 @@ void hashtable_print(hashtable_t* hashtable) {
 }
 
 static void load_data_bytes(byte_t* src, byte_t* dst, uint8_t size) {
-    printf("size: %d\n", size);
     for(int i = 0; i < size; i++) {
         dst[i] = src[i];
-#ifdef DEBUG_MODE
-        printf("%d,", src[i]);
-#endif
     }
-#ifdef DEBUG_MODE
-    printf("\n");
-#endif
 }
-
-// void show_hashtable(hashtable_t * hashtable) {
-//     uint32_t cell_number = length(hashtable->cells);
-
-//     for (int i = 0; i < cell_number; i++) {
-        
-//     }
-// }
