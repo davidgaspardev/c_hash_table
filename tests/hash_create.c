@@ -3,6 +3,7 @@
 #include <cbytes.h>
 
 const char* hash_inputs[150];
+const byte_t COLLISTION_TOLERANCE_PERCENTAGE = 46;
 
 int main() {
 
@@ -42,7 +43,7 @@ int main() {
 
     printf("[ TEST ] %d collisions (%f%%)\n", collision_count, collision_tax);
 
-    if (collision_tax > /* tolerance of up to 46% */ 46) return 1;
+    if (collision_tax > COLLISTION_TOLERANCE_PERCENTAGE) return 1;
 
     return 0;
 }

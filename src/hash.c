@@ -14,7 +14,7 @@ byte_t is_int_even(int integer) {
 // Hash function that takes a inputing as an input and returns an index between 0 and max_size
 unsigned int hash(const char* key, unsigned int max_size) {
 #ifdef DEBUG_MODE
-        sprintf(msg, "create hash index - key: %s (max size: %d)", key, max_size);
+        sprintf(msg, "Create hash index - key: %s (max size: %d)", key, max_size);
         console(msg);
 #endif
     unsigned long hash;
@@ -28,10 +28,10 @@ unsigned int hash(const char* key, unsigned int max_size) {
     unsigned int result = (hash % max_size);
 #ifdef DEBUG_MODE
     if (is_int_even(length(key))) {
-        sprintf(msg, "hash created using knuth: %d (raw: %lu)", result, hash);
+        sprintf(msg, "Hash created using knuth: %d (raw: %lu)", result, hash);
         console(msg);
     } else {
-        sprintf(msg, "hash created using djb2: %d (raw: %lu)", result, hash);
+        sprintf(msg, "Hash created using djb2: %d (raw: %lu)", result, hash);
         console(msg);
     }
 #endif
