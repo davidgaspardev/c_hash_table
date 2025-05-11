@@ -22,3 +22,6 @@ jobs:
       
       - name: Run test - hash creation
         run: make test_hash_create DEBUG_MODE=true
+      
+      - name: Run test - hashtable creation
+        run: make test_hashtable_create DEBUG_MODE=true
