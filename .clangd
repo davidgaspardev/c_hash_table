@@ -1,0 +1,4 @@
+CompileFlags:
+  Add:
+    - "--include-directory=src/"
+    - "--include-directory=includes/cbytes/src/"
